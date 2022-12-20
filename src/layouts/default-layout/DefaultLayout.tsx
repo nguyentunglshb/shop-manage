@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AliwangwangOutlined,
   QuestionCircleOutlined,
@@ -18,6 +18,8 @@ export function DefaultLayout() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const [collapsedMenu, setCollapsedMenu] = useState(false);
 
   const location = useLocation();
   const bs = location.pathname.split("/").filter((b) => b !== "");
@@ -49,7 +51,15 @@ export function DefaultLayout() {
         </Space>
       </Header>
       <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}>
+        <Sider
+          collapsed={collapsedMenu}
+          collapsible={true}
+          onCollapse={() => setCollapsedMenu((prev) => !prev)}
+          style={{
+            background: colorBgContainer,
+          }}
+          width={250}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={["1"]}

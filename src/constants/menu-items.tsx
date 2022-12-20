@@ -1,6 +1,13 @@
 import React from "react";
 import { MenuProps, Typography } from "antd";
-import { NotificationOutlined, PieChartOutlined } from "@ant-design/icons";
+import {
+  NotificationOutlined,
+  PieChartOutlined,
+  SkinOutlined,
+  SettingOutlined,
+  FileTextOutlined,
+  FileProtectOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { enumNavigation } from "./navigations";
@@ -17,6 +24,40 @@ export const items: MenuProps["items"] = [
     ),
     key: "dashboard",
   },
+  {
+    label: (
+      <Link to={enumNavigation.PRODUCTS}>
+        <SkinOutlined />
+        <Text>Products</Text>
+      </Link>
+    ),
+    key: "products",
+  },
+  {
+    label: (
+      //   <Link to={enumNavigation.ORDERS}>
+
+      <>
+        {" "}
+        <FileTextOutlined />
+        <Text>Orders</Text>
+      </>
+      //   </Link>
+    ),
+    key: "orders",
+    children: [
+      {
+        label: (
+          <Link to={enumNavigation.ORDERS}>
+            <FileProtectOutlined />
+            <Text>All Orders</Text>
+          </Link>
+        ),
+        key: "all orders",
+      },
+    ],
+  },
+
   {
     label: "Navigation Three - Submenu",
     key: "SubMenu",
@@ -75,6 +116,15 @@ export const items: MenuProps["items"] = [
         <Text>About</Text>
       </Link>
     ),
-    key: "alipay",
+    key: "about",
+  },
+  {
+    label: (
+      <Link to={enumNavigation.SETTINGS}>
+        <SettingOutlined />
+        <Text>Settings</Text>
+      </Link>
+    ),
+    key: "settings",
   },
 ];

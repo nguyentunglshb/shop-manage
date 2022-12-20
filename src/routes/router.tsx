@@ -1,11 +1,14 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 
 import { DefaultLayout } from "@/layouts";
-import { Dashboard, About } from "@/pages";
+import { Dashboard, About, Products, Settings, Orders } from "@/pages";
 
 export enum EnumProtectedRoutes {
   DASHBOARD = "",
   ABOUT = "about",
+  PRODUCTS = "products",
+  SETTINGS = "settings",
+  ORDERS = "orders",
 }
 
 const protectedRoutes: RouteObject[] = [
@@ -20,6 +23,18 @@ const protectedRoutes: RouteObject[] = [
       {
         path: EnumProtectedRoutes.ABOUT,
         element: <About />,
+      },
+      {
+        path: EnumProtectedRoutes.ORDERS,
+        element: <Orders />,
+      },
+      {
+        path: EnumProtectedRoutes.PRODUCTS,
+        element: <Products />,
+      },
+      {
+        path: EnumProtectedRoutes.SETTINGS,
+        element: <Settings />,
       },
     ],
   },
