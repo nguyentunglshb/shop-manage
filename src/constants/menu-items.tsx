@@ -34,12 +34,10 @@ export const items: MenuProps["items"] = [
   },
   {
     label: (
-      // <Link to={enumNavigation.PRODUCTS}>
       <>
         <SkinOutlined />
         <Text>Products</Text>
       </>
-      // </Link>
     ),
     key: "products",
     children: [
@@ -50,7 +48,7 @@ export const items: MenuProps["items"] = [
             <Text>All Products</Text>
           </Link>
         ),
-        key: "products",
+        key: "all products",
       },
       {
         label: (

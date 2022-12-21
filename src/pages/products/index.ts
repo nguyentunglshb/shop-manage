@@ -1,7 +1,9 @@
 export * from "./Products";
 
-export * from "./ForWomen";
+export * from "./ForKid";
 
 export * from "./ForMen";
 
-export * from "./ForKid";
+export * from "./ForWomen";
+
+export * from "./ProductInfo";

@@ -8,4 +8,4 @@ export * from "./Settings";
 
 export * from "./orders";
 
-export * from "./Users";
+export * from "./users";

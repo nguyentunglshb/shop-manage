@@ -8,3 +8,6 @@ export function formatBreadscum(string: string) {
     .map((s) => capitalizeFirstLetter(s))
     .join(" ");
 }
+
+export const formatPrice = (price: number) =>
+  price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");

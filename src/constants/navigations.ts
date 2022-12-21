@@ -4,6 +4,7 @@ export enum enumNavigation {
   ABOUT = "/about",
 
   PRODUCTS = "/products",
+  PRODUCTS_INFO = "/products/:_id",
   FOR_WOMEN = "/products/women",
   FOR_MEN = "/products/men",
   FOR_KID = "/products/kid",
@@ -15,6 +16,7 @@ export enum enumNavigation {
   PENDING_ORDERS = "/orders/pending-orders",
 
   USERS = "/users",
+  USER_INFO = "/users/:_id",
 
   SETTINGS = "settings",
 }

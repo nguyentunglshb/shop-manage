@@ -15,12 +15,16 @@ import {
   ForMen,
   ForKid,
   InprogressOrders,
+  UserInfo,
+  ProductInfo,
 } from "@/pages";
 
 export enum EnumProtectedRoutes {
   DASHBOARD = "",
 
+  EMPTY = "",
   ABOUT = "about",
+  INFO = ":_id",
 
   PRODUCTS = "products",
   PRODUCTS_WOMEN = "women",
@@ -80,8 +84,15 @@ const protectedRoutes: RouteObject[] = [
         path: EnumProtectedRoutes.PRODUCTS,
         children: [
           {
-            index: true,
+            // index: true,
+            path: EnumProtectedRoutes.EMPTY,
             element: <Products />,
+            children: [
+              {
+                path: EnumProtectedRoutes.INFO,
+                element: <ProductInfo />,
+              },
+            ],
           },
           {
             path: EnumProtectedRoutes.PRODUCTS_WOMEN,
@@ -100,6 +111,12 @@ const protectedRoutes: RouteObject[] = [
       {
         path: EnumProtectedRoutes.USERS,
         element: <Users />,
+        children: [
+          {
+            path: EnumProtectedRoutes.INFO,
+            element: <UserInfo />,
+          },
+        ],
       },
       {
         path: EnumProtectedRoutes.SETTINGS,
