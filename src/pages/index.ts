@@ -2,8 +2,10 @@ export * from "./About";
 
 export * from "./Dashboard";
 
-export * from "./Products";
+export * from "./products";
 
 export * from "./Settings";
 
-export * from "./Orders";
+export * from "./orders";
+
+export * from "./Users";

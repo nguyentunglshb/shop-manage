@@ -1,14 +1,41 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 
 import { DefaultLayout } from "@/layouts";
-import { Dashboard, About, Products, Settings, Orders } from "@/pages";
+import {
+  Dashboard,
+  About,
+  Products,
+  Settings,
+  Orders,
+  CompletedOrders,
+  CanceledOrders,
+  PendingOrders,
+  Users,
+  ForWomen,
+  ForMen,
+  ForKid,
+  InprogressOrders,
+} from "@/pages";
 
 export enum EnumProtectedRoutes {
   DASHBOARD = "",
+
   ABOUT = "about",
+
   PRODUCTS = "products",
+  PRODUCTS_WOMEN = "women",
+  PRODUCTS_MAN = "men",
+  PRODUCTS_KID = "kid",
+
   SETTINGS = "settings",
+
   ORDERS = "orders",
+  INPROGRESS_ORDERS = "inprogress-orders",
+  COMPLETED_ORDERS = "completed-orders",
+  CANCELED_ORDERS = "canceled-orders",
+  PENDING_ORDERS = "pending-orders",
+
+  USERS = "users",
 }
 
 const protectedRoutes: RouteObject[] = [
@@ -26,11 +53,53 @@ const protectedRoutes: RouteObject[] = [
       },
       {
         path: EnumProtectedRoutes.ORDERS,
-        element: <Orders />,
+        children: [
+          {
+            index: true,
+            element: <Orders />,
+          },
+          {
+            path: EnumProtectedRoutes.INPROGRESS_ORDERS,
+            element: <InprogressOrders />,
+          },
+          {
+            path: EnumProtectedRoutes.COMPLETED_ORDERS,
+            element: <CompletedOrders />,
+          },
+          {
+            path: EnumProtectedRoutes.PENDING_ORDERS,
+            element: <PendingOrders />,
+          },
+          {
+            path: EnumProtectedRoutes.CANCELED_ORDERS,
+            element: <CanceledOrders />,
+          },
+        ],
       },
       {
         path: EnumProtectedRoutes.PRODUCTS,
-        element: <Products />,
+        children: [
+          {
+            index: true,
+            element: <Products />,
+          },
+          {
+            path: EnumProtectedRoutes.PRODUCTS_WOMEN,
+            element: <ForWomen />,
+          },
+          {
+            path: EnumProtectedRoutes.PRODUCTS_MAN,
+            element: <ForMen />,
+          },
+          {
+            path: EnumProtectedRoutes.PRODUCTS_KID,
+            element: <ForKid />,
+          },
+        ],
+      },
+      {
+        path: EnumProtectedRoutes.USERS,
+        element: <Users />,
       },
       {
         path: EnumProtectedRoutes.SETTINGS,
