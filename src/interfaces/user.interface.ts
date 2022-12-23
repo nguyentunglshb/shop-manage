@@ -8,6 +8,7 @@ export enum enumUserStatus {
 export interface IUser {
   _id: string;
   username: string;
+  avatarUrl?: string;
   createdAt: string;
   status: enumUserStatus;
   address?: string;

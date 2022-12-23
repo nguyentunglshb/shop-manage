@@ -7,6 +7,9 @@ import { enumNavigation } from "@/constants";
 import { productsMockData } from "@/mockData";
 import { enumProductStatus } from "@/interfaces";
 import { formatPrice } from "@/utils";
+import { useQuery } from "react-query";
+import { productApi } from "@/services/productApi";
+import { Loading } from "../loading";
 
 export const ProductTable = () => {
   const navigate = useNavigate();
@@ -42,13 +45,15 @@ export const ProductTable = () => {
       title: "Origin price",
       dataIndex: "originPrice",
       key: "originPrice",
-      render: (_: any, record: any) => formatPrice(record.originPrice),
+      render: (_: any, record: any) =>
+        record.originPrice && formatPrice(record.originPrice),
     },
     {
       title: "Current Price",
       dataIndex: "currentPrice",
       key: "currentPrice",
-      render: (_: any, record: any) => formatPrice(record.currentPrice),
+      render: (_: any, record: any) =>
+        record.currentPrice && formatPrice(record.currentPrice),
     },
     {
       title: "Currency",
@@ -105,15 +110,23 @@ export const ProductTable = () => {
       },
     },
   ];
+
+  const { isLoading, data } = useQuery({
+    queryKey: "all products",
+    queryFn: () => productApi.getAll(),
+  });
+
   return (
-    <Table
-      columns={columns}
-      dataSource={productsMockData.map((p, index) => {
-        return {
-          ...p,
-          key: index,
-        };
-      })}
-    />
+    <Loading isLoading={isLoading}>
+      <Table
+        columns={columns}
+        dataSource={data?.data.map((p, index) => {
+          return {
+            ...p,
+            key: index,
+          };
+        })}
+      />
+    </Loading>
   );
 };

@@ -1,11 +1,13 @@
 import React from "react";
-import { Space, Table, Tag, Tooltip } from "antd";
+import { Image, Space, Table, Tag, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
-import { usersMockData } from "@/mockData";
 import { enumUserStatus } from "@/interfaces";
 import { enumNavigation } from "@/constants";
+import { userApi } from "@/services/userApi";
+import { Loading } from "../loading";
 
 export const UserTable = () => {
   const navigate = useNavigate();
@@ -25,6 +27,14 @@ export const UserTable = () => {
       key: "username",
     },
     {
+      title: "Avatar",
+      dataIndex: "avatarUrl",
+      key: "avatarUrl",
+      render: (_: any, { avatarUrl }: { avatarUrl?: string }) => {
+        return avatarUrl ? <Image src={avatarUrl} height={200} /> : <></>;
+      },
+    },
+    {
       title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
@@ -41,11 +51,6 @@ export const UserTable = () => {
         );
       },
     },
-    // {
-    //   title: "Username",
-    //   dataIndex: "username",
-    //   key: "username",
-    // },
     // {
     //   title: "Username",
     //   dataIndex: "username",
@@ -72,15 +77,23 @@ export const UserTable = () => {
       },
     },
   ];
+
+  const { isLoading, data } = useQuery({
+    queryKey: "all users",
+    queryFn: () => userApi.getAll(),
+  });
+
   return (
-    <Table
-      columns={columns}
-      dataSource={usersMockData.map((u, index) => {
-        return {
-          ...u,
-          key: index,
-        };
-      })}
-    />
+    <Loading isLoading={isLoading}>
+      <Table
+        columns={columns}
+        dataSource={data?.data.map((u, index) => {
+          return {
+            ...u,
+            key: index,
+          };
+        })}
+      />
+    </Loading>
   );
 };

@@ -17,8 +17,8 @@ export interface IProduct {
   imageUrls?: string[];
   description?: string;
   content?: string;
-  originPrice?: number;
-  currentPrice?: number;
+  originPrice?: number | string;
+  currentPrice?: number | string;
   currency?: enumCurrency;
   tags?: string[];
 }
