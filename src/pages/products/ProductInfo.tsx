@@ -36,19 +36,7 @@ export const ProductInfo = () => {
     queryFn: () => productApi.getById(_id),
   });
 
-  console.log(data);
-
-  const productData = productsMockData.find((p) => p._id === _id) as IProduct;
-  const {
-    name,
-    createdAt,
-    headImageUrl,
-    status,
-    originPrice,
-    currentPrice,
-    currency,
-    tags,
-  } = productData;
+  const productData = data?.data;
 
   return (
     <Drawer
@@ -81,7 +69,7 @@ export const ProductInfo = () => {
                   <Text>Name: </Text>
                 </Col>
                 <Col span={16}>
-                  <Input defaultValue={name} />
+                  <Input defaultValue={productData?.name} />
                 </Col>
               </Row>
             </Col>
@@ -91,7 +79,7 @@ export const ProductInfo = () => {
                   <Text>Head image: </Text>
                 </Col>
                 <Col span={16}>
-                  <Image src={headImageUrl} height={200} />
+                  <Image src={productData?.headImageUrl} height={200} />
                 </Col>
               </Row>
             </Col>
@@ -101,7 +89,7 @@ export const ProductInfo = () => {
                   <Text>Origin price: </Text>
                 </Col>
                 <Col span={16}>
-                  <Input defaultValue={originPrice} />
+                  <Input defaultValue={productData?.originPrice} />
                 </Col>
               </Row>
             </Col>
@@ -111,7 +99,7 @@ export const ProductInfo = () => {
                   <Text>Current price: </Text>
                 </Col>
                 <Col span={16}>
-                  <Input defaultValue={currentPrice} />
+                  <Input defaultValue={productData?.currentPrice} />
                 </Col>
               </Row>
             </Col>
@@ -121,7 +109,7 @@ export const ProductInfo = () => {
                   <Text>Currency: </Text>
                 </Col>
                 <Col span={16}>
-                  <Radio.Group value={currency}>
+                  <Radio.Group value={productData?.currency}>
                     <Radio value={enumCurrency.USD}>USD</Radio>
                     <Radio value={enumCurrency.VND}>VND</Radio>
                   </Radio.Group>
@@ -135,8 +123,8 @@ export const ProductInfo = () => {
                 </Col>
                 <Col span={16}>
                   <Row gutter={[0, 4]}>
-                    {tags?.length &&
-                      tags.map((tag) => (
+                    {productData?.tags?.length &&
+                      productData?.tags.map((tag) => (
                         <Col key={tag}>
                           <Tag>{tag}</Tag>
                         </Col>
@@ -151,7 +139,7 @@ export const ProductInfo = () => {
                   <Text>Created At: </Text>
                 </Col>
                 <Col span={16}>
-                  <Text>{createdAt}</Text>
+                  <Text>{productData?.createdAt}</Text>
                 </Col>
               </Row>
             </Col>
@@ -162,7 +150,9 @@ export const ProductInfo = () => {
                 </Col>
                 <Col span={16}>
                   <Switch
-                    defaultChecked={status === enumProductStatus.ACTIVE}
+                    defaultChecked={
+                      productData?.status === enumProductStatus.ACTIVE
+                    }
                   />
                 </Col>
               </Row>
