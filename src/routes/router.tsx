@@ -17,6 +17,7 @@ import {
   InprogressOrders,
   UserInfo,
   ProductInfo,
+  ProductAddForm,
 } from "@/pages";
 
 export enum EnumProtectedRoutes {
@@ -25,6 +26,7 @@ export enum EnumProtectedRoutes {
   EMPTY = "",
   ABOUT = "about",
   INFO = ":_id",
+  ADD = "add",
 
   PRODUCTS = "products",
   PRODUCTS_WOMEN = "women",
@@ -92,6 +94,10 @@ const protectedRoutes: RouteObject[] = [
                 path: EnumProtectedRoutes.INFO,
                 element: <ProductInfo />,
               },
+              {
+                path: EnumProtectedRoutes.ADD,
+                element: <ProductAddForm />
+              }
             ],
           },
           {

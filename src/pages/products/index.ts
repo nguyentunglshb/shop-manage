@@ -7,3 +7,5 @@ export * from "./ForMen";
 export * from "./ForWomen";
 
 export * from "./ProductInfo";
+
+export * from './ProductAddForm'

@@ -16,8 +16,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 import { enumNavigation } from "@/constants";
-import { enumCurrency, enumProductStatus, IProduct } from "@/interfaces";
-import { productsMockData } from "@/mockData";
+import { enumCurrency, enumProductStatus } from "@/interfaces";
 import { useQuery } from "react-query";
 import { productApi } from "@/services/productApi";
 import { Loading } from "@/components";
@@ -43,6 +42,7 @@ export const ProductInfo = () => {
       title="Edit products"
       open={Boolean(_id)}
       onClose={navigateToProductPage}
+      destroyOnClose
       width={500}
       extra={
         <Space>
