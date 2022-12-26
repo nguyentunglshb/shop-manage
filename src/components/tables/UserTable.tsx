@@ -8,6 +8,7 @@ import { enumUserStatus } from "@/interfaces";
 import { enumNavigation } from "@/constants";
 import { userApi } from "@/services/userApi";
 import { Loading } from "../loading";
+import { formatDDMMMYYYY } from "@/utils";
 
 export const UserTable = () => {
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ export const UserTable = () => {
       title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (_: any, { createdAt }: { createdAt: string }) => {
+        return createdAt && formatDDMMMYYYY(createdAt);
+      },
     },
     {
       title: "Status",

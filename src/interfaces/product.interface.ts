@@ -22,3 +22,13 @@ export interface IProduct {
   currency?: enumCurrency;
   tags?: string[];
 }
+
+export interface IproductAddForm {
+  name: string;
+  description?: string;
+  content?: string;
+  originPrice?: string;
+  currentPrice?: string;
+  currency?: string;
+  tags?: string[];
+}

@@ -11,4 +11,13 @@ export const productApi = {
     const url = `/products/${_id}`;
     return await axiosClient.get<IProduct>(url);
   },
+
+  create: async (body: FormData) => {
+    const url = `/products`;
+    return await axiosClient.post(url, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 };

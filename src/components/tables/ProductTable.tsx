@@ -2,12 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Image, Row, Col, Space, Table, Tag, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useQuery } from "react-query";
 
 import { enumNavigation } from "@/constants";
-import { productsMockData } from "@/mockData";
 import { enumProductStatus } from "@/interfaces";
-import { formatPrice } from "@/utils";
-import { useQuery } from "react-query";
+import { formatDDMMMYYYY, formatPrice } from "@/utils";
 import { productApi } from "@/services/productApi";
 import { Loading } from "../loading";
 
@@ -40,6 +39,9 @@ export const ProductTable = () => {
       title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (_: any, { createdAt }: { createdAt: string }) => {
+        return createdAt && formatDDMMMYYYY(createdAt);
+      },
     },
     {
       title: "Origin price",

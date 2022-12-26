@@ -1,15 +1,76 @@
-import React from "react";
-import { Button, Drawer, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Drawer, Form, Input, Radio, Select, Space } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
+import TextArea from "antd/es/input/TextArea";
 
 import { enumNavigation } from "@/constants";
-import { Loading } from "@/components";
+import { enumCurrency, IproductAddForm } from "@/interfaces";
+import { FileUpload, IFileType } from "@/components";
+import { productApi } from "@/services/productApi";
 
 export function ProductAddForm() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const [headImage, setHeadImage] = useState<IFileType[]>([]);
+  const [images, setImages] = useState<IFileType[]>([]);
+
+  const formData = new FormData();
+
+  const { handleSubmit, control } = useForm<IproductAddForm>({
+    defaultValues: {
+      name: "",
+      description: "",
+      content: "",
+      originPrice: "",
+      currentPrice: "",
+      currency: enumCurrency.USD,
+      tags: ["kid", "women"],
+    },
+  });
+
+  const handleFormDataChange = (key: string, value: string | File | File[]) => {
+    if (Array.isArray(value)) {
+      for (const v of value) {
+        formData.append(key, v);
+      }
+    } else {
+      formData.append(key, value);
+    }
+  };
+
+  const onSubmit = async (data: IproductAddForm) => {
+    for (const [key, value] of Object.entries(data)) {
+      handleFormDataChange(key, value);
+    }
+
+    try {
+      const res = await productApi.create(formData);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const navigateToProductPage = () => navigate(enumNavigation.PRODUCTS);
+
+  useEffect(() => {
+    console.log(headImage);
+    formData.delete("headImage");
+    headImage.forEach((image) => {
+      delete image.preview;
+      formData.append("headImage", image);
+    });
+  }, [headImage]);
+
+  useEffect(() => {
+    formData.delete("images");
+    images.forEach((image) => {
+      delete image.preview;
+      formData.append("images", image);
+    });
+  }, [images]);
 
   return (
     <Drawer
@@ -21,11 +82,84 @@ export function ProductAddForm() {
       extra={
         <Space>
           <Button onClick={navigateToProductPage}>Cancel</Button>
-          <Button onClick={navigateToProductPage} type="primary">
+          <Button type="primary" onClick={handleSubmit(onSubmit)}>
             Submit
           </Button>
         </Space>
       }
-    ></Drawer>
+    >
+      <Form
+        labelCol={{
+          span: 6,
+        }}
+        onFinish={handleSubmit(onSubmit)}
+      >
+        <Form.Item label="Name" required>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => <Input {...field} />}
+          />
+        </Form.Item>
+        <Form.Item label="Description">
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => <TextArea {...field} />}
+          />
+        </Form.Item>
+        <Form.Item label="Content">
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => <TextArea {...field} />}
+          />
+        </Form.Item>
+        <Form.Item label="Origin price" required>
+          <Controller
+            name="originPrice"
+            control={control}
+            render={({ field }) => <Input {...field} />}
+          />
+        </Form.Item>
+        <Form.Item label="Current price" required>
+          <Controller
+            name="currentPrice"
+            control={control}
+            render={({ field }) => <Input {...field} />}
+          />
+        </Form.Item>
+        <Form.Item label="Currency" required>
+          <Controller
+            name="currency"
+            control={control}
+            render={({ field }) => (
+              <Radio.Group {...field}>
+                <Radio value={enumCurrency.USD}>{enumCurrency.USD}</Radio>
+                <Radio value={enumCurrency.VND}>{enumCurrency.VND}</Radio>
+              </Radio.Group>
+            )}
+          />
+        </Form.Item>
+        <Form.Item label="Tags" required>
+          <Controller
+            name="tags"
+            control={control}
+            render={({ field }) => <Select mode="tags" {...field} />}
+          />
+        </Form.Item>
+        <Form.Item label="Head Image" required>
+          <FileUpload files={headImage} setFiles={setHeadImage} />
+        </Form.Item>
+        <Form.Item label="Images">
+          <FileUpload
+            multiple
+            files={images}
+            setFiles={setImages}
+            keyType="images"
+          />
+        </Form.Item>
+      </Form>
+    </Drawer>
   );
 }
