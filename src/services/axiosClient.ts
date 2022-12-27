@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { ParamsSerializerOptions } from "axios";
 
 import { accessToken } from "./../utils/auth";
 
-// const Qs = require("query-string");
+import queryString from "query-string";
 
 const axiosClient = axios.create({
   // baseURL: import.meta.env.BASE_URL,
@@ -16,14 +16,15 @@ const axiosClient = axios.create({
     "Access-Control-Allow-Credentials": true,
     crossorigin: true,
   },
+  // paramsSerializer: (params: any) => queryString.stringify(params),
 });
 
 axiosClient.interceptors.request.use((config: any) => {
   config.headers["Authorization"] = `Bearer ${accessToken}`;
-  // config.paramsSerializer = function (params: any) {
-  //   return Qs.stringify(params, { arrayFormat: "brackets" });
-  // };
-  delete axios.defaults.headers.common["Accept-Encoding"];
+  config.paramsSerializer = function (params: any) {
+    return queryString.stringify(params, { arrayFormat: "bracket" });
+  };
+  // delete axios.defaults.headers.common["Accept-Encoding"];
   return config;
 });
 

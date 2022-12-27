@@ -20,6 +20,7 @@ import { enumCurrency, enumProductStatus } from "@/interfaces";
 import { useQuery } from "react-query";
 import { productApi } from "@/services/productApi";
 import { Loading } from "@/components";
+import TextArea from "antd/es/input/TextArea";
 
 const { Text } = Typography;
 
@@ -31,7 +32,7 @@ export const ProductInfo = () => {
   const navigateToProductPage = () => navigate(enumNavigation.PRODUCTS);
 
   const { data, isLoading } = useQuery({
-    queryKey: `product${_id}`,
+    queryKey: ["product", _id],
     queryFn: () => productApi.getById(_id),
   });
 
@@ -43,7 +44,7 @@ export const ProductInfo = () => {
       open={Boolean(_id)}
       onClose={navigateToProductPage}
       destroyOnClose
-      width={500}
+      width={800}
       extra={
         <Space>
           <Button onClick={navigateToProductPage}>Cancel</Button>
@@ -86,6 +87,16 @@ export const ProductInfo = () => {
             <Col span={24}>
               <Row>
                 <Col span={8}>
+                  <Text>Images: </Text>
+                </Col>
+                {productData?.imageUrls?.map((src, index) => {
+                  return <Image key={src + index} src={src} />;
+                })}
+              </Row>
+            </Col>
+            <Col span={24}>
+              <Row>
+                <Col span={8}>
                   <Text>Origin price: </Text>
                 </Col>
                 <Col span={16}>
@@ -113,6 +124,26 @@ export const ProductInfo = () => {
                     <Radio value={enumCurrency.USD}>USD</Radio>
                     <Radio value={enumCurrency.VND}>VND</Radio>
                   </Radio.Group>
+                </Col>
+              </Row>
+            </Col>
+            <Col span={24}>
+              <Row>
+                <Col span={8}>
+                  <Text>Description: </Text>
+                </Col>
+                <Col span={16}>
+                  <TextArea defaultValue={productData?.description} />
+                </Col>
+              </Row>
+            </Col>
+            <Col span={24}>
+              <Row>
+                <Col span={8}>
+                  <Text>Content: </Text>
+                </Col>
+                <Col span={16}>
+                  <TextArea defaultValue={productData?.content} />
                 </Col>
               </Row>
             </Col>

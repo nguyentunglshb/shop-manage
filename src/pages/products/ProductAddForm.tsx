@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Drawer, Form, Input, Radio, Select, Space } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -6,19 +6,26 @@ import TextArea from "antd/es/input/TextArea";
 
 import { enumNavigation } from "@/constants";
 import { enumCurrency, IproductAddForm } from "@/interfaces";
-import { FileUpload, IFileType } from "@/components";
+import { FileUpload } from "@/components";
 import { productApi } from "@/services/productApi";
+import { useMutation } from "react-query";
+import { enumMessageType, NotificationContext } from "@/contexts";
 
 export function ProductAddForm() {
+  const messageKey = "add-new-product";
+
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { openMessage } = useContext(NotificationContext);
 
-  const [headImage, setHeadImage] = useState<IFileType[]>([]);
-  const [images, setImages] = useState<IFileType[]>([]);
+  const [headImage, setHeadImage] = useState<File[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+
+  const navigateToProductPage = () => navigate(enumNavigation.PRODUCTS);
 
   const formData = new FormData();
 
-  const { handleSubmit, control } = useForm<IproductAddForm>({
+  const { handleSubmit, control, reset } = useForm<IproductAddForm>({
     defaultValues: {
       name: "",
       description: "",
@@ -29,6 +36,10 @@ export function ProductAddForm() {
       tags: ["kid", "women"],
     },
   });
+
+  const { isLoading, mutate, isSuccess, isError } = useMutation(
+    (fd: FormData) => productApi.create(fd)
+  );
 
   const handleFormDataChange = (key: string, value: string | File | File[]) => {
     if (Array.isArray(value)) {
@@ -44,33 +55,38 @@ export function ProductAddForm() {
     for (const [key, value] of Object.entries(data)) {
       handleFormDataChange(key, value);
     }
-
-    try {
-      const res = await productApi.create(formData);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+    for (const file of images) {
+      formData.append("images", file);
     }
+
+    formData.append("headImage", headImage[0]);
+    mutate(formData);
+    // openMessage('new', enumMessageType.ERROR, )
   };
 
-  const navigateToProductPage = () => navigate(enumNavigation.PRODUCTS);
-
   useEffect(() => {
-    console.log(headImage);
-    formData.delete("headImage");
-    headImage.forEach((image) => {
-      delete image.preview;
-      formData.append("headImage", image);
-    });
-  }, [headImage]);
-
-  useEffect(() => {
-    formData.delete("images");
-    images.forEach((image) => {
-      delete image.preview;
-      formData.append("images", image);
-    });
-  }, [images]);
+    if (isLoading) {
+      openMessage(messageKey, enumMessageType.LOADING, "Creating new product");
+    }
+    if (isSuccess) {
+      openMessage(
+        messageKey,
+        enumMessageType.SUCCESS,
+        "Create new product successfully"
+      );
+      reset();
+      navigateToProductPage();
+    }
+    if (isError) {
+      openMessage(
+        messageKey,
+        enumMessageType.ERROR,
+        "Create new product failed"
+      );
+      reset();
+      navigateToProductPage();
+    }
+  }, [isLoading, isError, isSuccess]);
 
   return (
     <Drawer

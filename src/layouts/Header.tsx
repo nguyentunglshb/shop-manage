@@ -1,15 +1,13 @@
 import React, { memo } from "react";
-
 import {
-  AliwangwangOutlined,
   QuestionCircleOutlined,
   BellOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Popover, Space, Tooltip, Typography } from "antd";
+import { Avatar, Button, Popover, Space, Tooltip } from "antd";
 import { Layout } from "antd";
 
-import { images } from "@/assets";
+import { images, RoundLogo } from "@/assets";
 
 const { Header } = Layout;
 
@@ -40,7 +38,7 @@ export const AppHeader = memo(() => {
         zIndex: 9,
       }}
     >
-      <AliwangwangOutlined style={{ fontSize: "40px" }} />
+      <RoundLogo />
       <Space size={16}>
         <BellOutlined
           style={{

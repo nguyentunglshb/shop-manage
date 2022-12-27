@@ -7,7 +7,8 @@ interface IProps {
   keyType?: "headImage" | "images";
   multiple?: boolean;
   files?: IFileType[];
-  setFiles: (files: IFileType[]) => void;
+  setFiles: (files: File[]) => void;
+  // handleDrop?: () => void;
 }
 
 export interface IFileType extends File {
@@ -18,17 +19,12 @@ export function FileUpload(props: IProps) {
   const { multiple = false, files = [], setFiles } = props;
 
   const onDropFile = (acceptedFiles: File[]) => {
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      )
-    );
+    setFiles(acceptedFiles);
   };
 
   const preview = files.map((file) => {
-    return <Image key={file.preview} src={file.preview} width={140} />;
+    const previewURL = URL.createObjectURL(file);
+    return <Image key={previewURL} src={previewURL} width={140} />;
   });
 
   return (

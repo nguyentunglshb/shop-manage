@@ -18,11 +18,6 @@ export const UserTable = () => {
 
   const columns = [
     {
-      title: "_Id",
-      dataIndex: "_id",
-      key: "_id",
-    },
-    {
       title: "Username",
       dataIndex: "username",
       key: "username",

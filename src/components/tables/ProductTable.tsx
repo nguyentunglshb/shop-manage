@@ -18,11 +18,6 @@ export const ProductTable = () => {
 
   const columns = [
     {
-      title: "_Id",
-      dataIndex: "_id",
-      key: "_id",
-    },
-    {
       title: "Name",
       dataIndex: "name",
       key: "name",
